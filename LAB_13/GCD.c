@@ -1,0 +1,105 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node{
+    int info;
+    struct node *link;
+};
+
+// Function to insert a new node at the end of the linked list
+struct node *insertAtEnd(struct node **head){
+    struct node *first = *head;
+
+    int x;
+    while(1){
+        printf("Enter number(-1 for exit) for insert = ");
+        scanf("%d",&x);
+        
+        if(x == -1){
+            break;
+        }
+
+        struct node *newnode = (struct node*)malloc(sizeof(struct node));
+        newnode->info = x;
+        
+        if(first == NULL){
+            newnode->link = first;
+            first = newnode;
+        }
+        else{
+            struct node *save = first;
+            
+            while(save->link != NULL){
+                save = save->link;
+            }
+
+            save->link = newnode;
+            newnode->link = NULL;
+        }
+    }
+    return first;
+}
+
+//GCD
+struct node *findGCD(struct node **head){
+    struct node *first = *head;
+    struct node *save = first;
+    int gcd_info;
+    
+    while(save->link != NULL){
+
+        if(save->info > save->link->info){
+        
+            for(int i=1; i<=save->link->info; i++){
+        
+                if(((save->info)%i == 0) && ((save->link->info)%i == 0)){
+                    gcd_info = i;
+                }
+            }
+        }
+        else{
+            for(int i=1; i<=save->info; i++){
+        
+                if(((save->info)%i == 0) && ((save->link->info)%i == 0)){
+                    gcd_info = i;
+                }
+            }
+        }
+
+        struct node *newnode = (struct node *)malloc(sizeof(struct node));
+        newnode->info = gcd_info;
+
+        struct node *currnte = save;
+        save = save->link;
+
+        currnte->link = newnode;
+        newnode->link = save;
+        
+    }
+    return first;
+}
+
+// Function to display all nodes in the linked list
+void displayNode(struct node **head){
+
+    struct node *first = *head;
+    
+    if(first == NULL){
+        printf("link list is empty");
+        return;
+    }
+    struct node* save = first;
+    while(save!= NULL){
+        printf("%d ",save->info);
+        save = save->link;
+    }    
+}
+
+void main(){
+    struct node *first = NULL;
+
+    first = insertAtEnd(&first);
+    first = findGCD(&first);
+
+    displayNode(&first);
+}
